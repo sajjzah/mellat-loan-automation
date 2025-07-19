@@ -1,0 +1,9 @@
+# Ignore build output directories
+dist
+build
+
+# Ignore node_modules (standard)
+node_modules
+
+# Ignore test coverage output
+coverage/

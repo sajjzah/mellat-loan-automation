@@ -1,24 +1,23 @@
-# Nestjs specific
-/dist
-/node_modules
-/build
-/tmp
-
-# Logs
-logs
-*.log
-npm-debug.log*
-pnpm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-
-# dotenv environment variable files
+# Environment variables
 .env
-.env.development
-.env.test
-.env.production
+.env.*
+!.env.example
 
-# temp directory
-.temp
-.tmp
+# Dependencies
+/node_modules
+
+# TypeScript build output
+/dist
+
+# OS generated files
+.DS_Store
+
+# Test coverage
+/coverage
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

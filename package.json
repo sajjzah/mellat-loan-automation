@@ -1,0 +1,71 @@
+{
+  "name": "mellat-loan-automation",
+  "version": "1.0.0",
+  "description": "Automation of requesting marriage loan from Bank Mellat.",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx --watch --env-file .env src/index.ts",
+    "start": "node dist/src/index.js",
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint",
+      "prettier --write"
+    ],
+    "*.{json,yml,yaml,md}": [
+      "prettier --write"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sajjzah/mellat-loan-automation.git"
+  },
+  "keywords": [
+    "automation",
+    "loan",
+    "bank",
+    "mellat",
+    "express",
+    "typescript",
+    "playwright"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sajjzah/mellat-loan-automation/issues"
+  },
+  "homepage": "https://github.com/sajjzah/mellat-loan-automation#readme",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.31.0",
+    "@tsconfig/node22": "^22.0.2",
+    "@types/express": "^5.0.3",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^24.0.14",
+    "eslint": "^9.31.0",
+    "eslint-plugin-perfectionist": "^4.15.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "prettier": "^3.6.2",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.37.0"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.54.1",
+    "express": "^5.1.0",
+    "morgan": "^1.10.1",
+    "winston": "^3.17.0"
+  }
+}
