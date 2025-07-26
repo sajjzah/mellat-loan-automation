@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Automation of requesting marriage loan from Bank Mellat.",
   "main": "src/index.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
-    "dev": "tsx --watch --env-file .env src/index.ts",
+    "dev": "tsx watch --include \"src/**/*.ts\" --env-file .env src/index.ts",
     "start": "node dist/src/index.js",
     "build": "tsc",
     "type-check": "tsc --noEmit",
@@ -13,7 +13,6 @@
     "lint:fix": "eslint --fix .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -36,7 +35,7 @@
     "mellat",
     "express",
     "typescript",
-    "playwright"
+    "puppeteer"
   ],
   "author": "",
   "license": "MIT",
@@ -63,9 +62,12 @@
     "typescript-eslint": "^8.37.0"
   },
   "dependencies": {
-    "@playwright/test": "^1.54.1",
+    "axios": "^1.11.0",
     "express": "^5.1.0",
     "morgan": "^1.10.1",
+    "puppeteer": "^24.14.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
     "winston": "^3.17.0"
   }
 }

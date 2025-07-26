@@ -1,13 +1,9 @@
 import express, { Request, Response } from 'express';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 
+import { writeToFile } from './lib/io.js';
 import Logger from './lib/logger.js';
 import morganMiddleware from './middleware/morganMiddleware.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import runAutomation from './service/automation.js';
 
 const app = express();
 const port = process.env.PORT ?? '9001';
@@ -16,46 +12,54 @@ app.use(morganMiddleware);
 app.use(express.json());
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
+  return res.send('Hello World!');
 });
 
-app.post('/', (req: Request, res: Response) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const { message } = req.body;
+app.post('/', async (req: Request, res: Response) => {
+  try {
+    const { message } = req.body as { message: string };
 
-  if (typeof message !== 'string') {
-    return res.status(400).json({ message: '"message" must be a string.' });
-  }
-
-  const match = /\b\d{7}\b/.exec(message);
-  const code = match ? match[0] : null;
-
-  if (!code) {
-    return res.status(400).json({
-      message: 'Invalid input. A 7-digit code must be present in "message".',
-    });
-  }
-
-  const output = {
-    code,
-    time: new Date().toISOString(),
-  };
-
-  const filePath = path.join(__dirname, 'data.json');
-
-  fs.writeFile(filePath, JSON.stringify(output, null, 2), (err) => {
-    if (err) {
-      Logger.error('Failed to write file:', err);
-      return res.status(500).json({ message: 'Failed to write file.' });
+    // Validate message type
+    if (typeof message !== 'string') {
+      return res.status(400).json({ message: '"message" must be a string.' });
     }
 
-    res.status(200).json({
+    // Extract the 7-digit code
+    const match = /\b\d{7}\b/.exec(message);
+    const code = match ? match[0] : null;
+
+    // If no code is found, return error
+    if (!code) {
+      return res.status(400).json({
+        message: 'Invalid input. A 7-digit code must be present in "message".',
+      });
+    }
+
+    // Prepare the data to save
+    const output = {
+      code,
+      time: new Date().toISOString(),
+    };
+
+    // Write to the file
+    await writeToFile(output);
+
+    return res.status(200).json({
       message: 'Data saved successfully.',
       saved: output,
     });
-  });
+  } catch (err) {
+    Logger.error('Error processing request: ', err);
+    return res.status(500).json({ message: 'Internal Server Error.' });
+  }
 });
 
+// Start the server and run automation
 app.listen(port, () => {
   Logger.info(`App listening on port ${port}`);
+
+  // Run automation in the background
+  void runAutomation().catch((err: unknown) =>
+    Logger.error('Error in automation:', err),
+  );
 });
